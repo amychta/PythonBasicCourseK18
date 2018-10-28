@@ -1,5 +1,5 @@
 from lessons.treewalker.MyNode import MyNode
-from lessons.treewalker.TreeBuilder import create_tree, excluded_list
+from lessons.treewalker.TreeBuilder import create_tree, excluded_topics
 import json
 
 
@@ -11,7 +11,7 @@ def pretty_print_tree(tree):
 
 
 def is_not_excluded_topic(topic_name):
-    return topic_name not in excluded_list()
+    return topic_name not in excluded_topics()
 
 
 def build_tree_without_excluded(node=MyNode, excluded_list_here=[]):

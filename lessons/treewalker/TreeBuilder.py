@@ -1,5 +1,7 @@
 from lessons.treewalker.MyNode import MyNode
 
+def excluded_topics():
+    return ["Obolonsky region", "Alaska", "Colorado", "Warsaw"]
 
 def create_tree():
     world = MyNode("World")
@@ -43,5 +45,3 @@ def create_tree():
     return world
 
 
-def excluded_list():
-    return ["Obolonsky region", "Alaska", "Colorado", "Warsaw"]
