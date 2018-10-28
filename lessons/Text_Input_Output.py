@@ -27,7 +27,7 @@ print("Я не Дід Мороз")
 
 
 temperature = raw_input("Enter your name: ")
-print ("Hello, : " + temperature + "!")
+print ("Hello, " + temperature + "!")
 
 temperature = raw_input("Enter temperature: ")
 print ("Temperature is: " + temperature)
