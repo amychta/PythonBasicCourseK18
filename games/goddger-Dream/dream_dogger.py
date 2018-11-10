@@ -59,6 +59,81 @@ baddieImage = pygame.image.load('baddie.png')
 # set up score
 topScore = 0
 
+def move_baddies_dows(baddies_1, reverseCheat_1, slowCheat_1):
+    for b in baddies_1:
+        if not reverseCheat_1 and not slowCheat_1:
+            b['rect'].move_ip(0, b['speed'])
+        elif reverseCheat_1:
+            b['rect'].move_ip(0, -5)
+        elif slowCheat_1:
+            b['rect'].move_ip(0, 1)
+
+# Move the baddies down.
+
+def handle_mouse_or_keyboard_event():
+    global reverseCheat, slowCheat, score
+
+    if event.type == QUIT:
+        terminate()
+
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        if (event.button == 1):
+            reverseCheat = True
+        if (event.button == 3):
+            slowCheat = True
+
+    if event.type == pygame.MOUSEBUTTONUP:
+        if (event.button == 1):
+            reverseCheat = False
+            score = score / 2
+        if (event.button == 3):
+            slowCheat = False
+            score = score / 2
+
+    if event.type == KEYDOWN:
+        if event.key == ord('z') or (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1):
+            reverseCheat = True
+        if event.key == ord('x') or (event.type == pygame.MOUSEBUTTONDOWN and event.button == 2):
+            slowCheat = True
+
+    if event.type == KEYUP:
+        if event.key == ord('z') or (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1):
+            reverseCheat = False
+            score = 0
+        if event.key == ord('x') or (event.type == pygame.MOUSEBUTTONDOWN and event.button == 2):
+            slowCheat = False
+            score = 0
+        if event.key == K_ESCAPE:
+            terminate()
+
+    if event.type == MOUSEMOTION:
+        # If the mouse moves, move the player where the cursor is.
+        playerRect.move_ip(event.pos[0] - playerRect.centerx, event.pos[1] - playerRect.centery)
+
+
+# global reverseCheat
+# global slowCheat
+
+
+def move_the_buddies_down(baddies_var, reverse_cheat_var, slow_cheat_var):
+        # global b
+    # Move the baddies down
+    for b in baddies_var:
+        if not reverse_cheat_var and not slow_cheat_var:
+            b['rect'].move_ip(0, b['speed'])
+        elif reverse_cheat_var:
+            b['rect'].move_ip(0, -5)
+        elif slow_cheat_var:
+            b['rect'].move_ip(0, 1)
+
+
+def delete_fallen_buddies():
+    global b
+    # Delete baddies that have fallen past the bottom.
+    for b in baddies[:]:
+        if b['rect'].top > WINDOWHEIGHT:
+            baddies.remove(b)
+
 
 while True:
     # set up the start of the game
@@ -68,52 +143,12 @@ while True:
     # moveLeft = moveRight = moveUp = moveDown = False
     reverseCheat = slowCheat = False
     baddieAddCounter = 0
-   # pygame.mixer.music.play(-1, 0.0)
 
     while True: # the game loop runs while the game part is playing
         score += 1 # increase score
 
         for event in pygame.event.get():
-            if event.type == QUIT:
-                terminate()
-
-
-            if (event.type== pygame.MOUSEBUTTONDOWN):
-                if (event.button == 1):
-                    reverseCheat = True
-                if (event.button == 3):
-                    slowCheat = True
-
-            if (event.type== pygame.MOUSEBUTTONUP):
-                if (event.button == 1):
-                    reverseCheat = False
-                    score = score/2
-                if (event.button == 3):
-                    slowCheat = False
-                    score = score / 2
-
-
-
-            if event.type == KEYDOWN:
-                if event.key == ord('z') or (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1):
-                    reverseCheat = True
-                if event.key == ord('x') or (event.type == pygame.MOUSEBUTTONDOWN and event.button == 2):
-                    slowCheat = True
-
-
-            if event.type == KEYUP:
-                if event.key == ord('z'):
-                    reverseCheat = False
-                    score = 0
-                if event.key == ord('x'):
-                    slowCheat = False
-                    score = 0
-                if event.key == K_ESCAPE:
-                        terminate()
-
-            if event.type == MOUSEMOTION:
-                # If the mouse moves, move the player where the cursor is.
-                playerRect.move_ip(event.pos[0] - playerRect.centerx, event.pos[1] - playerRect.centery)
+            handle_mouse_or_keyboard_event()
 
         # Add new baddies at the top of the screen, if needed.
         if not reverseCheat and not slowCheat:
@@ -132,19 +167,9 @@ while True:
         # Move the mouse cursor to match the player.
         pygame.mouse.set_pos(playerRect.centerx, playerRect.centery)
 
-        # Move the baddies down.
-        for b in baddies:
-            if not reverseCheat and not slowCheat:
-                b['rect'].move_ip(0, b['speed'])
-            elif reverseCheat:
-                b['rect'].move_ip(0, -5)
-            elif slowCheat:
-                b['rect'].move_ip(0, 1)
+        move_the_buddies_down(baddies, reverseCheat, slowCheat)
 
-         # Delete baddies that have fallen past the bottom.
-        for b in baddies[:]:
-            if b['rect'].top > WINDOWHEIGHT:
-                baddies.remove(b)
+        delete_fallen_buddies()
 
         # Draw the game world on the window.
         windowSurface.fill(BACKGROUNDCOLOR)
