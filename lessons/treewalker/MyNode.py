@@ -1,4 +1,5 @@
 class MyNode(object):
+
     topic_name = None
     children = []
 
