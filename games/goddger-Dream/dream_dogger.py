@@ -1,16 +1,16 @@
 import pygame, random, sys, os
 from pygame.locals import *
 
-WINDOWWIDTH = 600
+WINDOW_WIDTH = 600
 WINDOWHEIGHT = 600
 TEXTCOLOR = (255, 255, 255)
 BACKGROUNDCOLOR = (0, 0, 0)
 FPS = 40
-BADDIEMINSIZE = 10
-BADDIEMAXSIZE = 40
-BADDIEMINSPEED = 1
-BADDIEMAXSPEED = 8
-ADDNEWBADDIERATE = 6
+BADDIE_MIN_SIZE = 10
+BADDIE_MAX_SIZE = 40
+BADDIE_MIN_SPEED = 1
+BADDIE_MAX_SPEED = 8
+ADD_NEW_BADDIE_RATE = 6
 PLAYERMOVERATE = 5
 
 
@@ -46,7 +46,7 @@ def drawText(text, font, surface, x, y):
 # Set up application
 pygame.init()
 mainClock = pygame.time.Clock()
-windowSurface = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
+windowSurface = pygame.display.set_mode((WINDOW_WIDTH, WINDOWHEIGHT))
 pygame.display.set_caption('Dodger')
 pygame.mouse.set_visible(False)
 font = pygame.font.SysFont(None, 48)
@@ -135,11 +135,34 @@ def delete_fallen_buddies():
             baddies.remove(b)
 
 
+def draw_black_game_window():
+    # Draw the game world on the window.
+    windowSurface.fill(BACKGROUNDCOLOR)
+
+
+def draw_scores(current_score, max_score):
+    # Draw the score and top score.
+    drawText('Score: %s' % (current_score), font, windowSurface, 10, 0)
+    drawText('Top Score: %s' % (max_score), font, windowSurface, 10, 40)
+
+
+def draw_player():
+    # Draw the player's rectangle
+    windowSurface.blit(playerImage, playerRect)
+
+
+def draw_all_baddies(baddies):
+    # global b
+    # Draw each baddie
+    for b in baddies:
+        windowSurface.blit(b['surface'], b['rect'])
+
+
 while True:
     # set up the start of the game
     baddies = []
     score = 0
-    playerRect.topleft = (WINDOWWIDTH / 2, WINDOWHEIGHT - 50)
+    playerRect.topleft = (WINDOW_WIDTH / 2, WINDOWHEIGHT - 50)
     # moveLeft = moveRight = moveUp = moveDown = False
     reverseCheat = slowCheat = False
     baddieAddCounter = 0
@@ -153,14 +176,13 @@ while True:
         # Add new baddies at the top of the screen, if needed.
         if not reverseCheat and not slowCheat:
             baddieAddCounter += 1
-        if baddieAddCounter == ADDNEWBADDIERATE:
+        if baddieAddCounter == ADD_NEW_BADDIE_RATE:
             baddieAddCounter = 0
-            baddieSize = random.randint(BADDIEMINSIZE, BADDIEMAXSIZE)
-            newBaddie = {'rect': pygame.Rect(random.randint(0, WINDOWWIDTH-baddieSize), 0 - baddieSize, baddieSize, baddieSize),
-                        'speed': random.randint(BADDIEMINSPEED, BADDIEMAXSPEED),
+            baddieSize = random.randint(BADDIE_MIN_SIZE, BADDIE_MAX_SIZE)
+            newBaddie = {'rect': pygame.Rect(random.randint(0, WINDOW_WIDTH - baddieSize), 0 - baddieSize, baddieSize, baddieSize),
+                        'speed': random.randint(BADDIE_MIN_SPEED, BADDIE_MAX_SPEED),
                         'surface':pygame.transform.scale(baddieImage, (baddieSize, baddieSize)),
                         }
-
             baddies.append(newBaddie)
 
 
@@ -171,19 +193,11 @@ while True:
 
         delete_fallen_buddies()
 
-        # Draw the game world on the window.
-        windowSurface.fill(BACKGROUNDCOLOR)
+        draw_black_game_window()
+        draw_scores(score, topScore)
+        draw_player()
 
-        # Draw the score and top score.
-        drawText('Score: %s' % (score), font, windowSurface, 10, 0)
-        drawText('Top Score: %s' % (topScore), font, windowSurface, 10, 40)
-
-        # Draw the player's rectangle
-        windowSurface.blit(playerImage, playerRect)
-
-        # Draw each baddie
-        for b in baddies:
-            windowSurface.blit(b['surface'], b['rect'])
+        draw_all_baddies(baddies)
 
         pygame.display.update()
 
