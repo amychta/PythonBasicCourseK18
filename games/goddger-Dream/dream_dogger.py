@@ -1,4 +1,4 @@
-import pygame, random, sys, os
+import pygame, random, sys
 from pygame.locals import *
 
 WINDOW_WIDTH = 1000
@@ -22,12 +22,9 @@ pygame.mouse.set_visible(False)
 font = pygame.font.SysFont(None, 48)
 
 # set up images
-# playerImage = pygame.image.load('icons\player.png')
-# playerImage = pygame.image.load('icons\ice_age.png')
 playerImage = pygame.image.load('icons\ice_age_80_80.png')
 
 playerRect = playerImage.get_rect()
-# animalImage = pygame.image.load('baddie.png')
 
 animalImage_1 = pygame.image.load('icons\dinosaur.jpg')
 animalImage_2 = pygame.image.load('icons\ezik_v_tumane.png')
@@ -36,13 +33,14 @@ animalImage_4 = pygame.image.load('icons\penguine.jpg')
 
 all_animals = [animalImage_1, animalImage_2, animalImage_3, animalImage_4]
 
-def getRandomAnimal():
-    return all_animals[random.randint(0, 3)]
-
 
 # set up score
 topScore = 0
 animalAddCounter = 0
+
+
+def get_random_animal():
+    return all_animals[random.randint(0, 3)]
 
 
 def terminate():
@@ -50,7 +48,7 @@ def terminate():
     sys.exit()
 
 
-def waitForPlayerToPressKey():
+def wait_forPlayer_To_PressKey():
     while True:
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -61,9 +59,9 @@ def waitForPlayerToPressKey():
                 return
 
 
-def playerHasHitAnimal(playerRect, animals):
-    for b in animals:
-        if playerRect.colliderect(b['rect']):
+def player_has_hit_animal(playerRect, animals):
+    for an in animals:
+        if playerRect.colliderect(an['rect']):
             return True
     return False
 
@@ -129,19 +127,18 @@ def handle_mouse_or_keyboard_event(event):
 
 
 def move_the_animals_down(animals_var, reverse_cheat_var, slow_cheat_var):
-    # global b
+    # global an
     # Move the animals down
-    for b in animals_var:
+    for an in animals_var:
         if not reverse_cheat_var and not slow_cheat_var:
-            b['rect'].move_ip(0, b['speed'])
+            an['rect'].move_ip(0, an['speed'])
         elif reverse_cheat_var:
-            b['rect'].move_ip(0, -5)
+            an['rect'].move_ip(0, -5)
         elif slow_cheat_var:
-            b['rect'].move_ip(0, 1)
+            an['rect'].move_ip(0, 1)
 
 
 def delete_fallen_animals():
-    global b
     # Delete animals that have fallen past the bottom.
     for animal in animals[:]:
         if animal['rect'].top > WINDOWHEIGHT:
@@ -165,14 +162,12 @@ def draw_player():
 
 
 def draw_all_animals(animals):
-    # global b
     # Draw each animal
     for b in animals:
         windowSurface.blit(b['surface'], b['rect'])
 
 
 def get_mouse_keyboard_events():
-    # global event
     for event in pygame.event.get():
         handle_mouse_or_keyboard_event(event)
 
@@ -190,7 +185,7 @@ def add_new_animals_if_needed(animals_list, newAnimalsNeeded):
             'rect': pygame.Rect(random.randint(0, WINDOW_WIDTH - animalSize), 0 - animalSize, animalSize, animalSize),
             'speed': random.randint(ANIMAL_MIN_SPEED, ANIMAL_MAX_SPEED),
             # 'surface': pygame.transform.scale(animalImage, (animalSize, animalSize)),
-            'surface': pygame.transform.scale(getRandomAnimal(), (animalSize, animalSize)),
+            'surface': pygame.transform.scale(get_random_animal(), (animalSize, animalSize)),
         }
         animals_list.append(newAnimal)
 
@@ -251,7 +246,7 @@ while True:
         pygame.display.update()
 
         # Check if any of the animals have hit the player.
-        if playerHasHitAnimal(playerRect, animals):
+        if player_has_hit_animal(playerRect, animals):
             if score > topScore:
                 topScore = score  # set new top score
             draw_black_game_window()
