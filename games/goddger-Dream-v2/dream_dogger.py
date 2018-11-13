@@ -23,8 +23,15 @@ font = pygame.font.SysFont(None, 48)
 
 # set up images
 playerImage = pygame.image.load('icons\ice_age_80_80.png')
+
 playerRect = playerImage.get_rect()
 
+animalImage_1 = pygame.image.load('icons\dinosaur.jpg')
+animalImage_2 = pygame.image.load('icons\ezik_v_tumane.png')
+animalImage_3 = pygame.image.load('icons\panda.jpg')
+animalImage_4 = pygame.image.load('icons\penguine.jpg')
+
+all_animals = [animalImage_1, animalImage_2, animalImage_3, animalImage_4]
 
 
 # set up score
@@ -32,8 +39,8 @@ topScore = 0
 animalAddCounter = 0
 
 
-def get_animal():
-    return pygame.image.load('icons\dinosaur.jpg')
+def get_random_animal():
+    return all_animals[random.randint(0, 3)]
 
 
 def terminate():
@@ -41,7 +48,15 @@ def terminate():
     sys.exit()
 
 
-
+def wait_forPlayer_To_PressKey():
+    while True:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                terminate()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:  # pressing escape quits
+                    terminate()
+                return
 
 
 def player_has_hit_animal(playerRect, animals):
@@ -68,6 +83,8 @@ def move_animals_dows(animals_1, reverseCheat_1, slowCheat_1):
             b['rect'].move_ip(0, 1)
 
 
+# Move the animals down.
+
 def handle_mouse_or_keyboard_event(event):
     global reverseCheat, slowCheat, score
 
@@ -89,16 +106,16 @@ def handle_mouse_or_keyboard_event(event):
             score = score / 2
 
     if event.type == KEYDOWN:
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # Mouse left click
+        if event.key == ord('z') or (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1):
             reverseCheat = True
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 2:  # Mouse right click
+        if event.key == ord('x') or (event.type == pygame.MOUSEBUTTONDOWN and event.button == 2):
             slowCheat = True
 
     if event.type == KEYUP:
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # Mouse left click
+        if event.key == ord('z') or (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1):
             reverseCheat = False
             score = 0
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 2:  # Mouse right click
+        if event.key == ord('x') or (event.type == pygame.MOUSEBUTTONDOWN and event.button == 2):
             slowCheat = False
             score = 0
         if event.key == K_ESCAPE:
@@ -110,6 +127,7 @@ def handle_mouse_or_keyboard_event(event):
 
 
 def move_the_animals_down(animals_var, reverse_cheat_var, slow_cheat_var):
+    # global an
     # Move the animals down
     for an in animals_var:
         if not reverse_cheat_var and not slow_cheat_var:
@@ -120,9 +138,9 @@ def move_the_animals_down(animals_var, reverse_cheat_var, slow_cheat_var):
             an['rect'].move_ip(0, 1)
 
 
-def delete_fallen_animals(animals_var):
+def delete_fallen_animals():
     # Delete animals that have fallen past the bottom.
-    for animal in animals_var[:]:
+    for animal in animals[:]:
         if animal['rect'].top > WINDOWHEIGHT:
             animals.remove(animal)
 
@@ -166,7 +184,8 @@ def add_new_animals_if_needed(animals_list, newAnimalsNeeded):
         newAnimal = {
             'rect': pygame.Rect(random.randint(0, WINDOW_WIDTH - animalSize), 0 - animalSize, animalSize, animalSize),
             'speed': random.randint(ANIMAL_MIN_SPEED, ANIMAL_MAX_SPEED),
-            'surface': pygame.transform.scale(get_animal(), (animalSize, animalSize)),
+            # 'surface': pygame.transform.scale(animalImage, (animalSize, animalSize)),
+            'surface': pygame.transform.scale(get_random_animal(), (animalSize, animalSize)),
         }
         animals_list.append(newAnimal)
 
@@ -195,17 +214,6 @@ def waitForPlayerToPressKey():
                 return
 
 
-def wait_for_player_to_press_key():
-    while True:
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                terminate()
-            if event.type == KEYDOWN:
-                if event.key == K_ESCAPE:  # pressing escape quits
-                    terminate()
-                return
-
-
 while True:
     # set up the start of the game
     animals = []
@@ -219,7 +227,7 @@ while True:
         score += 1  # increase score
 
         get_mouse_keyboard_events()
-        newAnimalsNeeded = new_animal_needed()
+        newAnimalsNeeded = new_animal_needed();
         if newAnimalsNeeded:
             add_new_animals_if_needed(animals, newAnimalsNeeded)
             newAnimalsNeeded = False
@@ -228,7 +236,7 @@ while True:
         pygame.mouse.set_pos(playerRect.centerx, playerRect.centery)
 
         move_the_animals_down(animals, reverseCheat, slowCheat)
-        delete_fallen_animals(animals)
+        delete_fallen_animals()
         draw_black_game_window()
         draw_scores(score, topScore)
         draw_player()
