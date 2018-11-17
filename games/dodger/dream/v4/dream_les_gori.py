@@ -22,22 +22,22 @@ windowSurface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
 
 
-def draw_text(text, font, surface, x, y):
-    textobj = font.render(text, 1, TEXT_COLOR)
-    textrect = textobj.get_rect()
-    textrect.topleft = (x, y)
-    surface.blit(textobj, textrect)
-
-
-def draw_scores(window_surface, current_score, max_score):
-    # score coordinates:
-    X_1 = 10
-    Y_1 = 0
-    # top score coordinates:
-    X_2 = 10
-    Y_2 = 40
-    draw_text('Score: %s' % (current_score), font, window_surface, X_1, Y_1)
-    draw_text('Top Score: %s' % (max_score), font, window_surface, X_2, Y_2)
+# def draw_text(text, font, surface, x, y):
+#     textobj = font.render(text, 1, TEXT_COLOR)
+#     textrect = textobj.get_rect()
+#     textrect.topleft = (x, y)
+#     surface.blit(textobj, textrect)
+#
+#
+# def draw_scores(window_surface, current_score, max_score):
+#     # score coordinates:
+#     X_1 = 10
+#     Y_1 = 0
+#     # top score coordinates:
+#     X_2 = 10
+#     Y_2 = 40
+#     draw_text('Score: %s' % (current_score), font, window_surface, X_1, Y_1)
+#     draw_text('Top Score: %s' % (max_score), font, window_surface, X_2, Y_2)
 
 
 

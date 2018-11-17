@@ -50,15 +50,15 @@ def player_has_hit_animal(playerRect, animals):
     return False
 
 
-def move_the_animals_down(animals_var, reverse_cheat_var, slow_cheat_var):
+def move_the_animals_down(animals_var):
     # Move the animals down
     for an in animals_var:
-        if not reverse_cheat_var and not slow_cheat_var:
+        # if not reverse_cheat_var and not slow_cheat_var:
             an['rect'].move_ip(0, an['speed'])
-        elif reverse_cheat_var:
-            an['rect'].move_ip(0, -5)
-        elif slow_cheat_var:
-            an['rect'].move_ip(0, 1)
+        # elif reverse_cheat_var:
+        #     an['rect'].move_ip(0, -5)
+        # elif slow_cheat_var:
+        #     an['rect'].move_ip(0, 1)
 
 
 def delete_fallen_animals(animals_var):
@@ -99,38 +99,38 @@ def wait_for_player_to_press_key():
 
 
 def handle_mouse_or_keyboard_event(event, playerRect):
-    global reverseCheat, slowCheat, score
+    # global reverseCheat, slowCheat, score
 
     if event.type == QUIT:
         program_exit()
 
-    if event.type == pygame.MOUSEBUTTONDOWN:
-        if (event.button == 1):
-            reverseCheat = True
-        if (event.button == 3):
-            slowCheat = True
-
-    if event.type == pygame.MOUSEBUTTONUP:
-        if (event.button == 1):
-            reverseCheat = False
-            score = score / 2
-        if (event.button == 3):
-            slowCheat = False
-            score = score / 2
-
-    if event.type == KEYDOWN:
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # Mouse left click
-            reverseCheat = True
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 2:  # Mouse right click
-            slowCheat = True
+    # if event.type == pygame.MOUSEBUTTONDOWN:
+    #     if (event.button == 1):
+    #         reverseCheat = True
+    #     if (event.button == 3):
+    #         slowCheat = True
+    #
+    # if event.type == pygame.MOUSEBUTTONUP:
+    #     if (event.button == 1):
+    #         reverseCheat = False
+    #         score = score / 2
+    #     if (event.button == 3):
+    #         slowCheat = False
+    #         score = score / 2
+    #
+    # if event.type == KEYDOWN:
+    #     if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # Mouse left click
+    #         reverseCheat = True
+    #     if event.type == pygame.MOUSEBUTTONDOWN and event.button == 2:  # Mouse right click
+    #         slowCheat = True
 
     if event.type == KEYUP:
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # Mouse left click
-            reverseCheat = False
-            score = 0
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 2:  # Mouse right click
-            slowCheat = False
-            score = 0
+        # if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # Mouse left click
+        #     reverseCheat = False
+        #     score = 0
+        # if event.type == pygame.MOUSEBUTTONDOWN and event.button == 2:  # Mouse right click
+        #     slowCheat = False
+        #     score = 0
         if event.key == K_ESCAPE:
             program_exit()
 
@@ -161,30 +161,30 @@ def build_rectangle_at_random_top_position(animalSize):
 def new_animal_is_needed():
     # Increase counter that indicates that new animals are needed
     global animalAddCounter
-    if not reverseCheat and not slowCheat:
-        animalAddCounter += 1
-        if animalAddCounter == ADD_NEW_ANIMAL_RATE:
-            animalAddCounter = 0
-            return True
+    # if not reverseCheat and not slowCheat:
+    animalAddCounter += 1
+    if animalAddCounter == ADD_NEW_ANIMAL_RATE:
+        animalAddCounter = 0
+        return True
     return False
 
 
-def draw_text(text, font, surface, x, y):
-    textobj = font.render(text, 1, TEXT_COLOR)
-    textrect = textobj.get_rect()
-    textrect.topleft = (x, y)
-    surface.blit(textobj, textrect)
-
-
-def draw_scores(window_surface, current_score, max_score):
-    # score coordinates:
-    X_1 = 10
-    Y_1 = 0
-    # top score coordinates:
-    X_2 = 10
-    Y_2 = 40
-    draw_text('Score: %s' % (current_score), font, window_surface, X_1, Y_1)
-    draw_text('Top Score: %s' % (max_score), font, window_surface, X_2, Y_2)
+# def draw_text(text, font, surface, x, y):
+#     textobj = font.render(text, 1, TEXT_COLOR)
+#     textrect = textobj.get_rect()
+#     textrect.topleft = (x, y)
+#     surface.blit(textobj, textrect)
+#
+#
+# def draw_scores(window_surface, current_score, max_score):
+#     # score coordinates:
+#     X_1 = 10
+#     Y_1 = 0
+#     # top score coordinates:
+#     X_2 = 10
+#     Y_2 = 40
+#     draw_text('Score: %s' % (current_score), font, window_surface, X_1, Y_1)
+#     draw_text('Top Score: %s' % (max_score), font, window_surface, X_2, Y_2)
 
 
 
@@ -219,12 +219,12 @@ while True:
 
         # Move the mouse cursor to match the player.
         # pygame.mouse.set_pos(playerRect.centerx, playerRect.centery)
-        # move_the_animals_down(animals, reverseCheat, slowCheat)
+        move_the_animals_down(animals)
         delete_fallen_animals(animals)
         draw_black_game_window(windowSurface)
         # draw_scores(windowSurface, score, topScore)
         # draw_player()
-        # draw_all_animals(animals)
+        draw_all_animals(animals)
 
         # update screen
         pygame.display.update()
