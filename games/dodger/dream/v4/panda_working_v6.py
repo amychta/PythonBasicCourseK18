@@ -29,7 +29,7 @@ class Panda:
         print("Panda " + panda_name + " created")
 
     # вивести повідомлення, якщо інша панда поряд
-    def show_message_if_another_panda_is_near(self, other_panda):
+    def change_skin_if_another_panda_is_near(self, other_panda):
         is_near = self.rectangle.colliderect(other_panda.rectangle) #  colliderect - це вбудована функція бібліотеки pygame
                                                                     #  вона перевіряє, що прямокутники навколо двох панд накладаються один на інший
         if is_near:
@@ -96,7 +96,7 @@ while running:
     panda1.draw_panda_on_window()                           #   намалювати панду 1
     panda2.draw_panda_on_window()                           #   намалювати панду 2
     pygame.display.update()                                 #   оновити екран
-    panda1.show_message_if_another_panda_is_near(panda2)    #   вивести повідомлення, якщо поряд інша панда
+    panda1.change_skin_if_another_panda_is_near(panda2)     #   змінити картинку в залежності від того, чи поряд інша панда
 
     running = not need_to_close_proram()                    #   індикатор завершення програми (використовується в циклі while)
 
