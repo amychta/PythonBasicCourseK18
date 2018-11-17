@@ -12,8 +12,6 @@ running = True
 
 
 class Panda:
-
-
     def __init__(self, x, y):
         self.img = pygame.image.load('panda.jpg')
         self.rect = self.img.get_rect()
@@ -34,12 +32,9 @@ panda2 = Panda(10, 50)
 panda3 = Panda(100, 200)
 
 
-
-panda4 = Panda(100, 200)
-
 while running:
     display.fill(WHITE)
-    panda4.draw(display)
+    panda1.draw(display)
     pygame.display.update()
     clock.tick(FPS) # 10 millisecond
 
@@ -51,3 +46,7 @@ while running:
 
     if keys[pygame.K_UP]:
         print("pressed key: UP")
+        panda1.rect.y = panda1.rect.y + 5
+    if keys[pygame.K_LEFT]:
+        print("pressed key: UP")
+        panda1.rect.x = panda1.rect.x + 5
