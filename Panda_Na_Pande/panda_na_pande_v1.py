@@ -9,10 +9,10 @@ WINDOW_SIZE = (1000, 800)                           #   розміри вікн�
 # Початкові налаштування
 pygame.init()                                       #   початкові налаштування бібліотеки  pygame
 window = pygame.display.set_mode(WINDOW_SIZE)       #   створити вікна програми з заданими розмірами
-# clock = pygame.time.Clock()                         #   створити годинник
+# clock = pygame.time.Clock()                       #   створити годинник
 
-panda__cosmos = pygame.image.load('panda.jpg')
-panda__happy = pygame.image.load('panda_happy.png')
+panda__cosmos = pygame.image.load('panda.jpg')      #   картинка, бажано розміром не більше 200 * 200
+panda__happy = pygame.image.load('panda_happy.jpg')
 
 
 class Panda:
@@ -39,6 +39,7 @@ class Panda:
     # намалювати панду на вікні
     def draw_panda_on_window(self, window):
         window.blit(self.image, self.rectangle)     # функція blit - вбудована функція бібліотеки pygame
+                                                    # малює картинку панди на вікні
 
     # змінити координати панди
     def move(self, x_diff, y_diff, direction_text):
@@ -64,21 +65,20 @@ def move_panda_if_needed(panda):
     all_pressed_keys = pygame.key.get_pressed()
 
     if all_pressed_keys[pygame.K_LEFT]:
-        panda.move(-10, 0, "LEFT")
+        panda.move(-5, 0, "LEFT")
 
     if all_pressed_keys[pygame.K_RIGHT]:
-        panda.move(+10, 0, "RIGHT")
+        panda.move(+5, 0, "RIGHT")
 
     if all_pressed_keys[pygame.K_UP]:
-        panda.move(0, -10, "UP")
+        panda.move(0, -5, "UP")
 
     if all_pressed_keys[pygame.K_DOWN]:
-        panda.move(0, +10, "DOWN")
+        panda.move(0, +5, "DOWN")
 
 
 panda1 = Panda(300, 500)
 panda2 = Panda(100, 200)
-panda3 = Panda(300, 600)
 running = True                                              #   флаг завершення програми
 
 while running:
@@ -88,10 +88,8 @@ while running:
     # перемалювари повністю вікно
     window.fill(COLOR_WHITE)                                #   намалювати білий екран
     panda1.change_skin_if_another_panda_is_near(panda2)     #   змінити картинку в залежності від того, чи поряд інша панда
-    panda1.change_skin_if_another_panda_is_near(panda3)     #   змінити картинку в залежності від того, чи поряд інша панда
     panda1.draw_panda_on_window(window)                     #   намалювати панду 1
     panda2.draw_panda_on_window(window)                     #   намалювати панду 2
-    panda3.draw_panda_on_window(window)                     #   намалювати панду 2
     pygame.display.update()                                 #   оновити екран
 
     running = not need_to_close_proram()                    #   індикатор завершення програми (використовується в циклі while)
